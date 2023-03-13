@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\ApiController;
+use App\Http\Resources\SupervisorResource;
 use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,7 @@ class SupervisorController extends ApiController
     {
         $supervisors = Supervisor::all();
 
-        return $this->successResponse('Supervisors retrieved successfully', $supervisors);
+        return $this->successResponse('Supervisors retrieved successfully', SupervisorResource::collection($supervisors));
     }
 
     public function store(Request $request)
@@ -57,7 +58,7 @@ class SupervisorController extends ApiController
         $supervisor = Supervisor::find($id);
         $supervisor->update($request->all());
 
-        return response()->json('Data updated');
+        return $this->successResponse('Data updated', $supervisor);
     }
 
     public function destroy(Supervisor $supervisor)
